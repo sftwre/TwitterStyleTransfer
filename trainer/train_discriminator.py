@@ -37,7 +37,7 @@ def main(args):
     device = 'cpu' if not gpu else 'cuda:0'
 
     # load pre-trained generator
-    model.load_state_dict(torch.load('models/vae.pt', map_location=torch.device(device)))
+    model.load_state_dict(torch.load('../models/vae.pt', map_location=torch.device(device)))
 
     optim_G = optim.Adam(model.decoder_params, lr=lr)
     optim_D = optim.Adam(model.discriminator_params, lr=lr)

@@ -1,9 +1,8 @@
-import nltk
 import numpy as np
-from torchtext.legacy import data
+from torchtext import data
 from torchtext.vocab import Vocab
 from collections import Counter
-from nltk.corpus import stopwords
+# from nltk.corpus import stopwords
 # nltk.download('stopwords')
 
 class TwitterDataset():
