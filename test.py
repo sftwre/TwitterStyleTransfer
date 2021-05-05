@@ -161,6 +161,22 @@ def main(args):
 
     print(f'Twitter account: @{dataset.idx2label(int(c_idx))}')
 
+    import math
+    from pytorch_pretrained_bert import OpenAIGPTTokenizer, OpenAIGPTModel, OpenAIGPTLMHeadModel
+    # Load pre-trained model (weights)
+    pmodel = OpenAIGPTLMHeadModel.from_pretrained('openai-gpt')
+    pmodel.eval()
+    # Load pre-trained model tokenizer (vocabulary)
+    tokenizer = OpenAIGPTTokenizer.from_pretrained('openai-gpt')
+
+    def score(sentence):
+        tokenize_input = tokenizer.tokenize(sentence)
+        tensor_input = torch.tensor([tokenizer.convert_tokens_to_ids(tokenize_input)])
+        loss=pmodel(tensor_input, lm_labels=tensor_input)
+        return math.exp(loss)
+
+    total_ratio = 0.0
+    total_perp = 0.0
     for _ in range(n_tweets):
         # Samples latent and conditional codes randomly from prior
         z = model.sample_z_prior(1)
@@ -172,8 +188,13 @@ def main(args):
             seqs = beam_search(sample_idxs, k)
             print(dataset.idxs2sentence(seqs[0][0]))
         else:
-            print(dataset.idxs2sentence(sample_idxs))
+            sent = dataset.idxs2sentence(sample_idxs)
+            print(sent)
 
+            total_perp += score(sent)
+            total_ratio += len(set(sent.split()))/len(sent.split())
+    print("Perplexity: " + str(total_perp/n_tweets))
+    print("Ratio: " + str(total_ratio/n_tweets))
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Tweet generation')
