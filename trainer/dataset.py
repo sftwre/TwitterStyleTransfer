@@ -15,12 +15,12 @@ class TwitterDataset():
         self.TEXT = data.Field(init_token='<start>', eos_token='<eos>', tokenize='spacy', fix_length=tweet_len)
         self.LABEL = data.Field(sequential=False, unk_token=None)
 
-        vocabPath = '../data/vocab.txt'
-        trainPath = '../data/tweets.train.txt'
-        trainLabelsPath = '../data/tweets.train.labels'
+        vocabPath = './data/vocab.txt'
+        trainPath = './data/tweets.train.txt'
+        trainLabelsPath = './data/tweets.train.labels'
 
-        testPath = '../data/tweets.test.txt'
-        testLabelsPath = '../data/tweets.test.labels'
+        testPath = './data/tweets.test.txt'
+        testLabelsPath = './data/tweets.test.labels'
 
         # stopwords to remove from tweets
         # self.sw = set(stopwords.words('english'))
